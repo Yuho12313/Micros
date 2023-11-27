@@ -24,56 +24,28 @@ namespace picGUI
             portList.DataSource = listaPuertos;
         }
 
-        private void bntConectar_Click(object sender, EventArgs e)
-        {
-            try 
-            {
-                if (!puertoSerie.IsOpen)
-                {
-                    puertoSerie.PortName = portList.SelectedItem.ToString();
-                    puertoSerie.Open();
-                }
-                else
-                {
-                    MessageBox.Show($"Ya se encuenra conectado al puerto: {puertoSerie.PortName}");
-                }
-            }
-            catch (Exception ermsg)
-            {
-                MessageBox.Show(ermsg.ToString());
-            }
-            
-        }
-
-        private void btnDesconectar_Click(object sender, EventArgs e)
-        {
-            try 
-            {
-                if (puertoSerie.IsOpen)
-                {
-                    puertoSerie.Close();
-                }
-                else
-                {
-                    MessageBox.Show("No se encuentra conectado a ningun puerto.");
-                }
-                
-            }
-            catch (Exception errmsg)
-            {
-                MessageBox.Show(errmsg.ToString());
-            }
-        }
-
+        //Configuracion del Puerto, para recibir informacion
         private void puertoSerie_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            
+            //Se crea una cadena para cada textbox
             try
             {
-                string recibe = puertoSerie.ReadLine();
-                bxTemperatura.Text += recibe + Environment.NewLine;
+                string recibe0 = puertoSerie.ReadLine();
+                bxTemperatura.Text += recibe0 + Environment.NewLine;
                 bxTemperatura.SelectionStart = bxTemperatura.TextLength;
                 bxTemperatura.ScrollToCaret();
+                string recibe1 = puertoSerie.ReadLine();
+                bxVentilador.Text += recibe1 + Environment.NewLine;
+                bxVentilador.SelectionStart = bxVentilador.TextLength;
+                bxVentilador.ScrollToCaret();
+                string recibe2 = puertoSerie.ReadLine();
+                bxHumedad.Text += recibe2 + Environment.NewLine;
+                bxHumedad.SelectionStart = bxHumedad.TextLength;
+                bxHumedad.ScrollToCaret();
+                string recibe3 = puertoSerie.ReadLine();
+                bxBomba.Text += recibe3 + Environment.NewLine;
+                bxBomba.SelectionStart = bxBomba.TextLength;
+                bxBomba.ScrollToCaret();
             }
             catch (Exception ex) 
             { 
@@ -97,10 +69,6 @@ namespace picGUI
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void label5_Click_1(object sender, EventArgs e)
         {
@@ -263,28 +231,68 @@ namespace picGUI
                 bcManual1.Checked = true;
             }
         }
-
-        private void btnOn1_Click(object sender, EventArgs e)
+        //Configuracion de botones
+        private void bntConectar_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //Si el puerto esta abierto para conectarce 
+                if (!puertoSerie.IsOpen)
+                {
+                    //Se conecta al puerto seleccionado
+                    puertoSerie.PortName = portList.SelectedItem.ToString();
+                    puertoSerie.Open();
+                }
+                else
+                {
+                    MessageBox.Show($"Ya se encuenra conectado al puerto: {puertoSerie.PortName}");
+                }
+            }
+            catch (Exception ermsg)
+            {
+                MessageBox.Show(ermsg.ToString());
+            }
 
         }
 
-        private void btnOff1_Click(object sender, EventArgs e)
+        private void btnDesconectar_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //Si ya esta conectado a un puerto
+                if (puertoSerie.IsOpen)
+                {
+                    //Cierra el puerto
+                    puertoSerie.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se encuentra conectado a ningun puerto.");
+                }
 
+            }
+            catch (Exception errmsg)
+            {
+                MessageBox.Show(errmsg.ToString());
+            }
         }
         //Temperatura en celsius min −273 °C max 100 °C
         private void btnEnviar0_Click(object sender, EventArgs e)
         {
             try
             {
+                //Si el puerto esta conectado
                 if (puertoSerie.IsOpen)
                 {
+                    //Creamos una variable que soporte numeros negativos
                     float temperatura;
+                    //convertimos el dato a flotante, si es asi
                     if(float.TryParse(bxEnviar0.Text, out temperatura))
                     {
+                        //comprobamos si el numero esta entre -273 hasta 100
                         if (temperatura >= -273 && temperatura <= 100)
                         {
+                            //Si es asi se envia el dato y se limpia la caja
                             puertoSerie.Write(bxEnviar0.Text);
                             bxEnviar0.Clear();
                         }
@@ -306,7 +314,7 @@ namespace picGUI
                     MessageBox.Show("No se encuentra conectado a ningun puerto");
                 }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
 
             }
@@ -316,13 +324,18 @@ namespace picGUI
         {
             try
             {
+                //Si el puerto esta conectado
                 if (puertoSerie.IsOpen)
                 {
+                    //Creamos una variable del tipo entero
                     int humedad;
+                    //convertimos el dato a enterp, si es asi
                     if (int.TryParse(bxEnviar1.Text, out humedad))
                     {
+                        //comprobamos si el numero esta entre 0 hasta 100
                         if (humedad >= 0 && humedad <= 100)
                         {
+                            //Si es asi se envia el dato y se limpia la caja
                             puertoSerie.Write(bxEnviar1.Text);
                             bxEnviar1.Clear();
                         }
@@ -350,8 +363,63 @@ namespace picGUI
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void btnOn0_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //Enviamos un uno logico como verdadero para activar
+                puertoSerie.Open();
+                puertoSerie.Write("1");  
+                puertoSerie.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al enviar la señal: " + ex.Message);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Enviamos un cero logico como false para desactivar 
+                puertoSerie.Open();
+                puertoSerie.Write("0");  
+                puertoSerie.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al enviar la señal: " + ex.Message);
+            }
+
+        }
+        private void btnOn1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Enviamos un uno logico como verdadero para activar
+                puertoSerie.Open();
+                puertoSerie.Write("1");  
+                puertoSerie.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al enviar la señal: " + ex.Message);
+            }
+        }
+        private void btnOff1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Enviamos un cero logico como false para desactivar
+                puertoSerie.Open();
+                puertoSerie.Write("0");  
+                puertoSerie.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al enviar la señal: " + ex.Message);
+            }
 
         }
     }

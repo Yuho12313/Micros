@@ -59,7 +59,7 @@ namespace picGUI
             this.bxHumedad = new System.Windows.Forms.TextBox();
             this.bcManual1 = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.btBomba = new System.Windows.Forms.TextBox();
+            this.bxBomba = new System.Windows.Forms.TextBox();
             this.btnOff1 = new System.Windows.Forms.Button();
             this.btnOn1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -299,6 +299,7 @@ namespace picGUI
             this.btnOn0.TabIndex = 7;
             this.btnOn0.Text = "On";
             this.btnOn0.UseVisualStyleBackColor = true;
+            this.btnOn0.Click += new System.EventHandler(this.btnOn0_Click);
             // 
             // label3
             // 
@@ -316,7 +317,7 @@ namespace picGUI
             this.groupBox4.Controls.Add(this.bxHumedad);
             this.groupBox4.Controls.Add(this.bcManual1);
             this.groupBox4.Controls.Add(this.label6);
-            this.groupBox4.Controls.Add(this.btBomba);
+            this.groupBox4.Controls.Add(this.bxBomba);
             this.groupBox4.Controls.Add(this.btnOff1);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.btnOn1);
@@ -370,14 +371,14 @@ namespace picGUI
             this.label6.TabIndex = 16;
             this.label6.Text = "Modo";
             // 
-            // btBomba
+            // bxBomba
             // 
-            this.btBomba.Location = new System.Drawing.Point(152, 73);
-            this.btBomba.Multiline = true;
-            this.btBomba.Name = "btBomba";
-            this.btBomba.ReadOnly = true;
-            this.btBomba.Size = new System.Drawing.Size(100, 27);
-            this.btBomba.TabIndex = 18;
+            this.bxBomba.Location = new System.Drawing.Point(152, 73);
+            this.bxBomba.Multiline = true;
+            this.bxBomba.Name = "bxBomba";
+            this.bxBomba.ReadOnly = true;
+            this.bxBomba.Size = new System.Drawing.Size(100, 27);
+            this.bxBomba.TabIndex = 18;
             // 
             // btnOff1
             // 
@@ -461,7 +462,7 @@ namespace picGUI
         private System.Windows.Forms.TextBox bxHumedad;
         private System.Windows.Forms.CheckBox bcManual1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox btBomba;
+        private System.Windows.Forms.TextBox bxBomba;
         private System.Windows.Forms.Button btnOff1;
         private System.Windows.Forms.Button btnOn1;
         private System.Windows.Forms.Label label5;
